@@ -1,5 +1,5 @@
 require 'tempfile'
-require 'uri'
+require 'webrick'
 
 class PDFKit
   class Source
@@ -38,11 +38,11 @@ class PDFKit
     private
 
     def shell_safe_url
-      url_needs_escaping? ? URI::escape(@source) : @source
+      url_needs_escaping? ? WEBrick::HTTPUtils.escape(@source) : @source
     end
 
     def url_needs_escaping?
-      URI::decode(@source) == @source
+      WEBrick::HTTPUtils.unescape(@source) == @source
     end
   end
 end
